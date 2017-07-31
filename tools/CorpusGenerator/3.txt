@@ -1,0 +1,3 @@
+limitline	@date@city限行
+limitline	@city限行
+navigation	去@PoiType

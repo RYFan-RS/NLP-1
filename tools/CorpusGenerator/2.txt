@@ -1,0 +1,3 @@
+明天北京限行	提取规则结果:/limitline/limitline.txt:12	@date@city限行	@date@city{/的}{限行/限号/限行尾号/道路限行/车辆限行/交通限行/尾号限行/限制单双号}	@date@city{/的}{限行}	@date@city{/的}{限行}	common:限行;	business:	variable:北京;明天;	label:city;date;
+北京限行	提取规则结果:/limitline/limitline.txt:7	@city限行	@city{/的}{限行/限号/限行尾号/道路限行/车辆限行/交通限行/尾号限行/限制单双号}	@city{/的}{限行}	@city{/的}{限行}	common:限行;	business:	variable:北京;	label:city;
+去地铁五号线	提取规则结果:/navigation/navigation.txt:18	去@PoiType	{去/到}@PoiType	{去}@PoiType	{去}@PoiType	common:去;	business:	variable:地铁五号线;	label:PoiType;

@@ -1,0 +1,46 @@
+#####/video/video.txt:1#####
+我想听@frequency	{我想/我要/我想要}{听/听听/听一听}@frequency	{我想}{听}@frequency
+我想听听@frequency	{我想/我要/我想要}{听/听听/听一听}@frequency	{我想}{听}@frequency
+我想听一听@frequency	{我想/我要/我想要}{听/听听/听一听}@frequency	{我想}{听}@frequency
+我要听@frequency	{我想/我要/我想要}{听/听听/听一听}@frequency	{我想}{听}@frequency
+我要听听@frequency	{我想/我要/我想要}{听/听听/听一听}@frequency	{我想}{听}@frequency
+我要听一听@frequency	{我想/我要/我想要}{听/听听/听一听}@frequency	{我想}{听}@frequency
+我想要听@frequency	{我想/我要/我想要}{听/听听/听一听}@frequency	{我想}{听}@frequency
+我想要听听@frequency	{我想/我要/我想要}{听/听听/听一听}@frequency	{我想}{听}@frequency
+我想要听一听@frequency	{我想/我要/我想要}{听/听听/听一听}@frequency	{我想}{听}@frequency
+#####/video/video.txt:2#####
+@frequency	@frequency	@frequency
+#####/video/video.txt:3#####
+我想听@radioname	{我想/我要/我想要}{听/听听/听一听}@radioname	{我想}{听}@radioname
+我想听听@radioname	{我想/我要/我想要}{听/听听/听一听}@radioname	{我想}{听}@radioname
+我想听一听@radioname	{我想/我要/我想要}{听/听听/听一听}@radioname	{我想}{听}@radioname
+我要听@radioname	{我想/我要/我想要}{听/听听/听一听}@radioname	{我想}{听}@radioname
+我要听听@radioname	{我想/我要/我想要}{听/听听/听一听}@radioname	{我想}{听}@radioname
+我要听一听@radioname	{我想/我要/我想要}{听/听听/听一听}@radioname	{我想}{听}@radioname
+我想要听@radioname	{我想/我要/我想要}{听/听听/听一听}@radioname	{我想}{听}@radioname
+我想要听听@radioname	{我想/我要/我想要}{听/听听/听一听}@radioname	{我想}{听}@radioname
+我想要听一听@radioname	{我想/我要/我想要}{听/听听/听一听}@radioname	{我想}{听}@radioname
+#####/video/video.txt:4#####
+播放FM	{播放/播/放}{FM/AM}	{播放}{FM}
+播放AM	{播放/播/放}{FM/AM}	{播放}{FM}
+播FM	{播放/播/放}{FM/AM}	{播放}{FM}
+播AM	{播放/播/放}{FM/AM}	{播放}{FM}
+放FM	{播放/播/放}{FM/AM}	{播放}{FM}
+放AM	{播放/播/放}{FM/AM}	{播放}{FM}
+#####/video/video.txt:5#####
+播放电台@frequency	{播放/播/放}{电台/广播}@frequency	{播放}{电台}@frequency
+播放广播@frequency	{播放/播/放}{电台/广播}@frequency	{播放}{电台}@frequency
+播电台@frequency	{播放/播/放}{电台/广播}@frequency	{播放}{电台}@frequency
+播广播@frequency	{播放/播/放}{电台/广播}@frequency	{播放}{电台}@frequency
+放电台@frequency	{播放/播/放}{电台/广播}@frequency	{播放}{电台}@frequency
+放广播@frequency	{播放/播/放}{电台/广播}@frequency	{播放}{电台}@frequency
+#####/video/video.txt:6#####
+播放@frequency	{播放/播/放}@frequency	{播放}@frequency
+播@frequency	{播放/播/放}@frequency	{播放}@frequency
+放@frequency	{播放/播/放}@frequency	{播放}@frequency
+#####/video/video.txt:7#####
+下一个频率	下一个{频率/调频/频道}	下一个{频率}
+下一个调频	下一个{频率/调频/频道}	下一个{频率}
+下一个频道	下一个{频率/调频/频道}	下一个{频率}
+#####/video/video.txt:8#####
+		error
