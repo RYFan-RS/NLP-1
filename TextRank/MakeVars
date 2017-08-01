@@ -1,0 +1,24 @@
+MAKE = make
+C = gcc
+CC = g++
+LD     := g++
+AR     := ar
+RANLIB := ranlib
+SHARED := -shared
+DATE   := $(shell date '+%Y%m%d')
+
+GOPSUB = $(subst yes,y,$(g-option))
+ifeq ($(GOPSUB),)
+	GOPSUB = $(subst yes,y,$(g))
+endif
+ifeq (${GOPSUB}, y)
+	GOPTION = -g
+endif
+
+OOPSUB = $(subst yes,y,$(o-option))
+ifeq ($(OOPSUB),)
+	OOPSUB = $(subst yes,y,$(o))
+endif
+ifeq (${OOPSUB}, y)
+	OOPTION = -O3
+endif
