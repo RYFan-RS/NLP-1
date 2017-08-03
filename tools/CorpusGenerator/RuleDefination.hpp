@@ -13,6 +13,7 @@
 #include "Utility.h"
 #include "lib4/FileName.hpp"
 #include "lib4/Algorithm.hpp"
+#include "lib4/String.hpp"
 #include "CmdArgs.hpp"
 
 
@@ -338,42 +339,84 @@ public:
 			
 			return false;
 		}
-	std::vector<std::string> parse_string(const std::string&str1)
+	std::vector<std::string> parse_string(const acl::String&str1,std::string &slabel)
 		{
-			std::vector<std::string> temp;
-			std::string temp2;
-			std::string temp3;
 			
-			for(int i =0;i<str1.length();i++)
-				{
-						temp2 = "";
-						if ((('A' <= str1[i]) && str1[i] <= 'Z') || ('a' <= str1[i] && str1[i] <= 'z') 
-							|| ('0' <= str1[i] && str1[i] <= '9') || str1[i] == '#' || str1[i] == '*' || str1[i] == '@')
-						{
-								temp2 += str1[i];
-								temp.push_back(temp2);
-						}
-						else if(i+2<str1.length())
-						{
-							//说明出现了中文
-							temp2 = str1[i];
-							temp2 += str1[i+1];
-							temp2 += str1[i+2];
-							temp2.insert(0,temp2.c_str(),3);
-							temp.push_back(temp2);
-							i+=2;
-						}
+			std::vector<std::string> vChar, v = str1.toCharactor();
+			std::map<std::string,int>::iterator iter;
+			std::vector<int> vRet;
+			std::string sChar;
+			
+			for(size_t i=0; i<v.size(); i++) {
+				if(v.at(i).length() > 1){
+					if(!sChar.empty()){
+						vChar.push_back(sChar);
+						slabel = sChar;
+						sChar.erase(sChar.begin(),sChar.end());
+					}
+					vChar.push_back(v.at(i));
+				}else{
+					//将非中文字符组装起来
+					sChar += v.at(i);
 				}
-			return temp;
+			}
+			
+		    if(!sChar.empty()){
+		        vChar.push_back(sChar);
+		    }			
+
+			return vChar;
 		}
+
+	std::set<std::string> recommend(const std::vector<std::string>&Output,const std::string&input,std::map<std::string,std::string>&mResult){
+
+	int Number = 0;
+	int distance = 0;
+	std::string slabel1;
+	std::string slabel2;
+	std::map<int,std::string> mTemp;
+	std::map<int,std::string>::const_iterator iter;
+	std::map<std::string,std::string>::const_iterator miter;
 	
+	std::set<std::string> sResult;
+
+	//1.只显示5个 2.显示的内容按照相似的顺序进行排列		
+	for(int i=0;i<Output.size();i++){	
+		distance = Editdistance(parse_string(Output[i],slabel1),parse_string(input,slabel2));
+		//特殊处理，variable不一样的放后面
+		if(distance<=50){
+			if(slabel1 != slabel2){
+				distance = 1000+i;
+			}			
+			mTemp.insert(std::make_pair(distance,Output[i]));
+		}
+	}
+
+	if(mTemp.empty()){
+		return sResult;
+	}
+	//map的key是按从小到大的顺序来排列的
+	for(iter = mTemp.begin();iter!=mTemp.end();++iter){
+		miter=mResult.find(iter->second);
+		if(miter != mResult.end()){
+			sResult.insert(miter->second);
+			if(sResult.size()==5){
+				break;
+			}		
+		}
+	}
+	return sResult;
+}
 	void recommend(const std::string&input,std::ostream& ofs = std::cout)
 		{
 			std::vector<std::string>RuleFiles;
 			std::vector<std::string>Output;
-			std::vector<std::string>result;
-			size_t pos;
-			size_t q = 1;
+			std::set<std::string>sResult;
+			std::map<std::string,std::string> mResult;
+			
+			std::set<std::string>::iterator siter;			
+			size_t pos = 0;
+			size_t rpos = 0;
 
 			//获取所有的输出结果
 			for(int i=0;i<m_vRuleFiles.size();i++)		
@@ -387,35 +430,28 @@ public:
 								{
 									continue;
 								}
-							//以\t进行切分本行数据
-							pos=RuleFiles[j].find('\t',0);
+							//以\t进行切分本行数据:兼容这种情况:@moviename原声音乐	@moviename{主题曲/片头曲/片尾曲/插曲/主题歌/原声音乐}	@moviename{主题曲}
+							rpos=RuleFiles[j].rfind('\t');
+							pos =RuleFiles[j].find('\t');
 							if(std::string::npos!=pos)
 								{									
 									Output.push_back(RuleFiles[j].substr(0,pos));
+									mResult.insert(make_pair(RuleFiles[j].substr(0,pos),RuleFiles[j].substr(rpos+1)));									
 								}
 						}					
 
 				}
 			//查询当前输入与所有输出结果间的编辑距离，如果不大于5就推荐
-			for(int i=0;i<Output.size();i++)
-				{	
-					int distance = Editdistance(parse_string(Output[i]),parse_string(input));
-					//std::cout<<input<<"   与    "<<Output[i]<<"的编辑距离为:    "<<distance<<std::endl;;
-					if((distance<=5)&&(Output[i].size()>0))
-						{
-							result.push_back(Output[i]);
-						}
-					
-				}
-			if(result.empty())
+			sResult = recommend(Output,input,mResult);
+			if(sResult.empty())
 				{
 					ofs<<"您的输入，与其他类似的输出差异性较大，无法为您推荐，建议您调整希望查询的内容";					
 				}
 			else
 				{
-					for(int i=0;i<result.size();i++)
+					for(siter=sResult.begin();siter!=sResult.end();++siter)
 						{
-							ofs<<result[i]<<";";				
+							ofs<<*siter<<";";				
 						}					
 				}
 

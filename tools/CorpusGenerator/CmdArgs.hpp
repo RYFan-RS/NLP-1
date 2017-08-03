@@ -47,7 +47,7 @@ class CmdArgs {
      
          std::string version(){
              std::string sRet;
-             sRet += "基于规则的语料生成工具 Ver2.2 20170727\n";
+             sRet += "基于规则的语料生成工具 Ver2.3 20170802\n";
              return sRet;
          }
          std::string history(){
@@ -91,6 +91,9 @@ class CmdArgs {
              sRet +="-----------------------------\n";				 			 
              sRet +="基于规则的语料生成工具 Ver2.2 20170727\n";
              sRet +="在生成的规则文件中新增原始的规则句式\n";
+             sRet +="-----------------------------\n";				 			 
+             sRet +="基于规则的语料生成工具 Ver2.3 20170802\n";
+             sRet +="在生成的规则文件中,当查找不到的时候，新增推荐内容\n";
 
 			 
              return sRet;

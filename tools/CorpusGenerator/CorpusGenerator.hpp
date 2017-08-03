@@ -203,7 +203,7 @@ public:
 		std::set<std::string> common;	
 		std::set<std::string> label;
         std::set<std::string>::iterator setIter;
-
+		bool bRecommend = false;
         //ofs<<"\n分词结果为:"<<acl::debug::toStr(vWord)<<std::endl;
         std::string sinput = input;
         while(true==cmd.isSimpleSearchMode())
@@ -267,11 +267,8 @@ public:
 		if(false==m_ruleDefination.input_search(output,cmd,ofs))
 			{
 			    //没有查找到的化,输出tab键来分割
-				ofs<<"无法为它提取规则:"<<output<<"\t\t\t\t";	
-                //ofs<<"提取关键词后:没有为您找到匹配的规则"<<"\t";		
-				//ofs<<"为您推荐的类似的规则:";	
-				//m_ruleDefination.recommend(output,ofs);
-				//ofs<<"\t";
+				ofs<<"无法为它提取规则:"<<output<<"\t\t\t\t";
+				bRecommend = true;
 			}
 
 		ofs<<"common:";
@@ -293,7 +290,11 @@ public:
         for(setIter = label.begin();setIter != label.end();setIter++)
             {           
                 ofs<<*setIter<<";";                
-            }		
+            }
+		if(bRecommend == true){
+			ofs<<"\t为您推荐的类似的规则:"; 
+			m_ruleDefination.recommend(output,ofs);
+		}
 		ofs<<std::endl;
 	}				
 	void input_search(CmdArgs &cmd){
