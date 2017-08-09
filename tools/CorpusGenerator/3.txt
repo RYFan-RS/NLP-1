@@ -1,3 +1,4 @@
-limitline	@date@city限行
-limitline	@city限行
-navigation	去@PoiType
+music	@singername唱的歌是什么
+music	@singername有啥歌曲听
+navigation	去@Place怎么走
+

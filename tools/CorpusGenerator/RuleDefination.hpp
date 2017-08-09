@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <vector>
+#include <map>
 #include "LineIndexManager.h"
 #include "CommonDefination.hpp"
 #include "BusinessDefination.hpp"
@@ -233,7 +234,6 @@ public:
 			}
 		}
 	}
-	
 	bool input_search(const std::string& input,sae::CmdArgs &cmd,std::ostream& ofs=std::cout){
 		std::vector<std::string> vRuleFile;
 		std::vector<std::string> vResult;
@@ -241,6 +241,7 @@ public:
 		bool bStop = false;
         bool bSkip = false;
 		size_t pos;
+		size_t rPos;
 		
 		for(int i=0;(i<m_vRuleFiles.size())&&(bStop==false);i++){
 			vRuleFile=m_vRuleFiles[i].m_corpus;
@@ -264,19 +265,14 @@ public:
 					continue;
 				}
 				//以\t进行切分本行数据
-				pos=vRuleFile[i].find('\t',0);
+				pos=vRuleFile[i].find('\t');
+				rPos=vRuleFile[i].rfind('\t');
+				
 				if(std::string::npos!=pos){
 					if(input==vRuleFile[i].substr(0,pos)){
-						vResult.push_back(input);
-						vResult.push_back(vRuleFile[i].substr(pos+1,vRuleFile[i].size()));
-						std::map<std::string,std::string>::iterator iter=m_mRulePair.find(sTemp);
-						std::cout<<"input_search:"+sTemp<<std::endl;
-						if(m_mRulePair.end() != iter){
-								vResult.push_back(iter->second);
-							}
-						else {
-								vResult.push_back("error");
-							}
+						//vResult.push_back(input);
+						vResult.push_back(vRuleFile[i].substr(pos+1,rPos-pos-1));
+						vResult.push_back(vRuleFile[i].substr(rPos+1));
 						bStop = true;
 						break;
 					}
@@ -368,35 +364,41 @@ public:
 			return vChar;
 		}
 
-	std::set<std::string> recommend(const std::vector<std::string>&Output,const std::string&input,std::map<std::string,std::string>&mResult){
+	std::set<std::string> recommend(const std::vector<std::string>&Output,const std::string&input,std::map<std::string,std::string>&mResult,std::set<std::string> &slabel){
 
 	int Number = 0;
 	int distance = 0;
 	std::string slabel1;
 	std::string slabel2;
-	std::map<int,std::string> mTemp;
+	std::multimap<int,std::string> mmTemp;
 	std::map<int,std::string>::const_iterator iter;
 	std::map<std::string,std::string>::const_iterator miter;
 	
 	std::set<std::string> sResult;
 
 	//1.只显示5个 2.显示的内容按照相似的顺序进行排列		
-	for(int i=0;i<Output.size();i++){	
+	for(int i=0;i<Output.size();i++){
+
 		distance = Editdistance(parse_string(Output[i],slabel1),parse_string(input,slabel2));
 		//特殊处理，variable不一样的放后面
-		if(distance<=50){
-			if(slabel1 != slabel2){
-				distance = 1000+i;
+		if(distance<5){
+			if(slabel.count(slabel1.substr(1))==0){
+				distance = 10+distance;
 			}			
-			mTemp.insert(std::make_pair(distance,Output[i]));
+			mmTemp.insert(std::make_pair(distance,Output[i]));
+		}
+		else if((distance<10)&&(slabel.count(slabel1.substr(1))==1)){
+			//对于距离较大，但是是同一个slabel集合里的可以降低要求,并且提高排序
+			distance -= 3;
+			mmTemp.insert(std::make_pair(distance,Output[i]));
 		}
 	}
 
-	if(mTemp.empty()){
+	if(mmTemp.empty()){
 		return sResult;
 	}
 	//map的key是按从小到大的顺序来排列的
-	for(iter = mTemp.begin();iter!=mTemp.end();++iter){
+	for(iter = mmTemp.begin();iter!=mmTemp.end();++iter){
 		miter=mResult.find(iter->second);
 		if(miter != mResult.end()){
 			sResult.insert(miter->second);
@@ -407,8 +409,7 @@ public:
 	}
 	return sResult;
 }
-	void recommend(const std::string&input,std::ostream& ofs = std::cout)
-		{
+	void recommend(const std::string&input,std::set<std::string> &label,std::ostream& ofs = std::cout){
 			std::vector<std::string>RuleFiles;
 			std::vector<std::string>Output;
 			std::set<std::string>sResult;
@@ -442,7 +443,7 @@ public:
 
 				}
 			//查询当前输入与所有输出结果间的编辑距离，如果不大于5就推荐
-			sResult = recommend(Output,input,mResult);
+			sResult = recommend(Output,input,mResult,label);
 			if(sResult.empty())
 				{
 					ofs<<"您的输入，与其他类似的输出差异性较大，无法为您推荐，建议您调整希望查询的内容";					

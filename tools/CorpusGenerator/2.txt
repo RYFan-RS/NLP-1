@@ -1,3 +1,4 @@
-明天北京限行	提取规则结果:/limitline/limitline.txt:12	@date@city限行	@date@city{/的}{限行/限号/限行尾号/道路限行/车辆限行/交通限行/尾号限行/限制单双号}	@date@city{/的}{限行}	@date@city{/的}{限行}	common:限行;	business:	variable:北京;明天;	label:city;date;
-北京限行	提取规则结果:/limitline/limitline.txt:7	@city限行	@city{/的}{限行/限号/限行尾号/道路限行/车辆限行/交通限行/尾号限行/限制单双号}	@city{/的}{限行}	@city{/的}{限行}	common:限行;	business:	variable:北京;	label:city;
-去地铁五号线	提取规则结果:/navigation/navigation.txt:18	去@PoiType	{去/到}@PoiType	{去}@PoiType	{去}@PoiType	common:去;	business:	variable:地铁五号线;	label:PoiType;
+郁可唯的歌怎样的	提取规则结果:/music/music.txt:170	@singername的歌怎样	@singername的歌怎样	common:歌;的;	business:	variable:郁可唯;	label:singer;singername;
+郁可唯长的怎样呀	无法为它提取规则:@singer长的怎样呀				common:呀;的;	business:	variable:郁可唯;	label:singer;singername;	为您推荐的类似的规则:@singername的@songname;@singername的{歌}播放;@singer长的怎样;{唱}@singername的{歌};{播放}@singername的{歌};
+郁可唯的歌	无法为它提取规则:@singer的歌				common:歌;的;	business:	variable:郁可唯;	label:singer;singername;	为您推荐的类似的规则:@singername{唱的}{歌}{有哪些};@singername歌曲播放;@singer的歌呀;{帮我}{唱}{一个}@singername的{歌};{帮我}{唱}{一个}@songname{/吧};
+帮我看一下地铁五号线怎么走	无法为它提取规则:帮我看一下@PoiType怎么走				common:帮我;看一下;	business:看一下;	variable:地铁五号线;	label:PoiType;	为您推荐的类似的规则:@PoiType怎么走;{帮我}{查询}@PoiType;{帮我}{查询}{去}@Place;{帮我}{查询}{附近}的@PoiType;{帮我}{查询}最近的@Place;

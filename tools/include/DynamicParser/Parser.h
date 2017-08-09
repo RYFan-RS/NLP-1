@@ -31,7 +31,7 @@ public:
 private:
     void parse(Result& result, const Dictionary& dic) const;
 private:
-    std::map<std::string, Dictionary> m_mDicMap;
+    std::map<std::string, Dictionary*> m_mDicMap;
 };
 
 }//dypsr

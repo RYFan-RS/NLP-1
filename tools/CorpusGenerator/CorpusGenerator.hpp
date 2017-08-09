@@ -167,6 +167,7 @@ public:
 					
 					DictType dicType;
 					dicType.nType = 3;
+					//m_files[i].m_name为"/limitline/2_date.txt"
                     std::string temp=m_files[i].m_name.substr(1);
                     dicType.sFileName = acl::Utility::extractAlphaNumberString(temp);
 					dicType.sVariableTag = sLine.substr(pos+1,sLine.size());
@@ -194,8 +195,7 @@ public:
 		typedef std::multimap<std::string,DictType>::const_iterator const_dict_iterator;
 		const_dict_iterator iter_dict;
 		std::pair<const_dict_iterator,const_dict_iterator> pair_iter_dict;
-		std::vector<std::string> temp;
-		std::string temp2;
+		std::vector<std::string> temp;		
 		std::string output;
 		std::string output_nochange;
 		std::set<std::string> varaiable;
@@ -204,6 +204,7 @@ public:
 		std::set<std::string> label;
         std::set<std::string>::iterator setIter;
 		bool bRecommend = false;
+		bool bRepeat = false;
         //ofs<<"\n分词结果为:"<<acl::debug::toStr(vWord)<<std::endl;
         std::string sinput = input;
         while(true==cmd.isSimpleSearchMode())
@@ -223,7 +224,9 @@ public:
                     }                    
             }
        
-		for(size_t j =0;j<vWord.size();j++){	
+		for(size_t j =0;j<vWord.size();j++){
+
+			bRepeat = false;
 			output_nochange += vWord[j];
             
 			pair_iter_dict = mdata.equal_range(vWord[j]);
@@ -249,9 +252,11 @@ public:
                         common.insert(vWord[j]);  
                     }  
                     if((iter->second.nType != 3)||(cmd.get_BusinessMode().empty())||(iter->second.sFileName == cmd.get_BusinessMode()))  {
-                            if(std::string::npos == output.find(vWord[j])){
+							//同一个词可能存在多个label，此时只保留一个label，稍后再处理
+                            if((std::string::npos == output.find(vWord[j]))&&(bRepeat == false)){
                                     //去重
                                     output += vWord[j];
+									bRepeat = true;
                                 }
                         }                    
                 }
@@ -261,15 +266,31 @@ public:
                 output = sinput;
                 output_nochange = sinput;
             }
-                    	
-		
 		ofs<<output_nochange<<"\t";
-		if(false==m_ruleDefination.input_search(output,cmd,ofs))
-			{
-			    //没有查找到的化,输出tab键来分割
-				ofs<<"无法为它提取规则:"<<output<<"\t\t\t\t";
-				bRecommend = true;
-			}
+
+		//一个词的label可能存在多个	
+		acl::String temp2 = output;
+		size_t pos = temp2.find("@");
+		bool bFind = false;
+		if(pos != std::string::npos) {
+				std::string temp3 = acl::Utility::extractAlphaNumberString(output.substr(pos+1));
+				for(std::set<std::string>::iterator iter = label.begin();iter!=label.end();iter++){
+					std::string temp4 = *iter;
+					temp2 = output;
+					temp2.replace(temp3,temp4);
+					if(true==m_ruleDefination.input_search(temp2,cmd,ofs))
+						{
+							bFind = true;
+							break;
+						}					
+				}
+		}
+
+		if(false == bFind){
+			//没有查找到的化,输出tab键来分割
+			ofs<<"无法为它提取规则:"<<output<<"\t\t\t\t";
+			bRecommend = true;
+		}
 
 		ofs<<"common:";
 		for(setIter = common.begin();setIter != common.end();setIter++)
@@ -293,7 +314,8 @@ public:
             }
 		if(bRecommend == true){
 			ofs<<"\t为您推荐的类似的规则:"; 
-			m_ruleDefination.recommend(output,ofs);
+			//同一个名词的label可能存在多个
+			m_ruleDefination.recommend(output,label,ofs);
 		}
 		ofs<<std::endl;
 	}				
@@ -343,10 +365,6 @@ public:
 				std::cout<<"无法打开输入文件，请输入正确的文件名"<<std::endl;
 				return false;
 			}
-		if(!ofs){
-			std::cout<<"无法打开输出文件，请指定输出文件名"<<std::endl;
-			return false;
-		}
 
 		acl::Time timer;
 		timer.start("Init");

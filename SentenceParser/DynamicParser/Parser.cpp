@@ -73,7 +73,6 @@ bool Parser::init(const std::string& sDicName, const std::vector<std::string>& v
 		if(dic->init(vWord) == false) {
 			return false;
 		}
-		m_mDicMap.insert(std::make_pair(sDicName,dic));
     }
 
     return true;

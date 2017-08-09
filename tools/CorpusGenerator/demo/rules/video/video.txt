@@ -1,0 +1,7 @@
+﻿{我想}{听}@frequency
+@frequency
+{我想}{听}@radioname
+{播放}{FM}
+{播放}{电台}@frequency
+{播放}@frequency
+下一个{频率}

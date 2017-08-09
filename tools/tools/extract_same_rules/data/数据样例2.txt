@@ -1,0 +1,12 @@
+﻿{/播放}@singername的{歌}
+@singername的{歌}{播放}
+听{一个}{歌}@singername的
+听{一首}@singername{唱的}
+打开@singername{唱的}{歌}
+打开@singername的{歌}
+{播放}{一个}@singername{/的}{歌}
+@singername的{歌}{播放}{一个}
+有没有@singername{唱的}{歌}
+有没有@singername的{歌}
+有没有{歌}@singername{唱的}
+@singername{唱的}{歌}有没有
