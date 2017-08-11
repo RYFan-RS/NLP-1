@@ -1,0 +1,62 @@
+###User Change Section################
+ROOT_DIR = ../..
+include $(ROOT_DIR)/MakeVars
+INCLUDE =  -I/usr/include/libxml2 -I$(ROOT_DIR)/include -I$(ROOT_DIR)/src -ICommon/ -I/usr/local/include/thrift/
+LIBRARY = $(ROOT_DIR)/bin/libMixParser.a $(ROOT_DIR)/bin/libSemanticEngine.a $(ROOT_DIR)/bin/libDynamicParser.a $(ROOT_DIR)/bin/libPcre++.a $(ROOT_DIR)/bin/libWordNetwork.a $(ROOT_DIR)/bin/libStaticParser.a $(ROOT_DIR)/bin/libExAPI.a $(ROOT_DIR)/bin/libBasicSearch.a /usr/local/lib/libthrift.a
+LFLAG = -L/usr/local/lib -lxml2 -lcurl -lpcre -lpthread -lopencc
+
+ifeq (${GOPTION}, -g)
+	DEBUG_OPTION = -D_CHAT_ENGINE_DEBUG
+	ENCODE_OPTION = -DUSE_ENCODE_DECODE
+else
+	LOG_OPTION = -D_CHAT_LOG
+endif
+ifeq (${OOPTION}, -O3)
+	ENCODE_OPTION = -DUSE_ENCODE_DECODE
+endif
+C_FLAGS = ${GOPTION} ${ENCODE_OPTION} -DFEATURE_TF_ONE_TIME -fPIC
+
+SOURCE = $(wildcard *.cpp FaqChat/*.cpp *.hpp)
+OBJECT = $(SOURCES:.cpp=.o)
+
+ENGINE_OBJ = FaqChat/KnowledgeBase.o FaqChat/Path.o Answer.o Input.o KnowledgeBase.o Path.o QA.o Result.o Target.o Entry.o GeneralChat/Path.o GeneralChat/QA.o GeneralChat/Sentence.o GeneralChat/WordSubdivisionDic.o GeneralChat/TfIdfRemend.o GeneralChat/WordCombination.o ChatResult.o KeyWordScoreRecord.o DicAnalysis.o ErrorCorrectionDic.o ErrorCorrectionHandle.o Filter.o GeneralChat/WordNearMeaning.o
+
+SERVER_OBJ = PureSearch/VKnowledgeBase.o PureSearch/SearchEngineEx.o PureSearch/GeneralChat/KnowledgeBase.o
+
+KNOWBASE_LIB_DIR = $(ROOT_DIR)/bin
+KNOWBASE_LIB = $(KNOWBASE_LIB_DIR)/libSearchEngineEx.a
+
+all: $(KNOWBASE_LIB) main
+
+%.d: %.cpp
+	@set -e; rm -f $@;
+	$(CC) $(INCLUDE) -MM $< | sed -e 's,.*\.o[ :]*,$*.o : ,g' > $@;
+
+sinclude $(SOURCES:.cpp=.d)
+
+%.o: %.cpp
+	$(CC) $(INCLUDE) $(C_FLAGS) -c $< -o $@
+
+main: $(KNOWBASE_LIB) $(LIBRARY) PureSearch/main.o
+	$(CC) $(C_FLAGS) -o PureSearch/main PureSearch/main.o $(KNOWBASE_LIB) $(LIBRARY) $(LFLAG)
+
+.PHONY: clean
+
+clean:
+	rm -f PureSearch/main PureSearch/main.o $(SERVER_OBJ) $(KNOWBASE_LIB)
+
+$(KNOWBASE_LIB) : $(ENGINE_OBJ) $(SERVER_OBJ)
+	@echo
+	@echo creating knowledgeBase library ...
+	@echo
+	$(AR) rcs $(KNOWBASE_LIB) $^
+	
+#Sub directories
+BIN_DIR = $(ROOT_DIR)/bin
+TOOL_DIR = $(ROOT_DIR)/tool
+RELEASE_DIR=$(ROOT_DIR)/release
+
+top-release:release
+	mv CustomerServiceChat.tar.gz $(RELEASE_DIR)
+
+

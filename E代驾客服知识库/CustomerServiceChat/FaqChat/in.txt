@@ -1,0 +1,4 @@
+#请问贵公司怎么走？
+{"Faq":[{"semantic":[{"用户提问公司地址":"NULL"}],"path": "NULL"}]}
+
+{"Faq":[{"semantic":[{"用户自定义问题":"NULL"}],"path": "NULL"}]}

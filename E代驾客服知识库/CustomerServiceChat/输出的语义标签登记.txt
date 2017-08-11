@@ -1,0 +1,36 @@
+	/*
+    Line 186: 	AddSemanticName("出发地"		,"StartLoc"				);
+	Line 187: 	AddSemanticName("目的地"		,"DestinationLoc"		);
+	Line 188: 	AddSemanticName("往返"			,"TicketWay"			);
+	Line 189: 	AddSemanticName("单程"			,"TicketWay"			);
+	Line 190: 	AddSemanticName("出发日期"		,"StartDate"			);
+	Line 191: 	AddSemanticName("返回日期"		,"ReturnDate"			);
+	Line 192: 	AddSemanticName("出发地机场"	,"StartAirport"			);
+	Line 193: 	AddSemanticName("目的地机场"	,"DestinationAirport"	);
+	
+	//过滤器
+	AddSemanticName("Price"			,"Price"				);
+	AddSemanticName("Discount"		,"Discount"				);
+	AddSemanticName("DepartureTime"	,"DepartureTime"		);
+	AddSemanticName("ArriveTime"	,"ArriveTime"			);
+	AddSemanticName("AirCompany"	,"AirCompany"			);
+	AddSemanticName("Model"			,"Model"				);
+	AddSemanticName("Cabin"			,"Cabin"				);
+	AddSemanticName("PriceRange"	,"PriceRange"			);	
+    机票业务输出的语义标签 需要登记在此
+    */
+    
+    /*
+	Line 276: 	AddSemanticName("入住日期", "CheckInDate");
+	Line 277: 	AddSemanticName("离店日期", "CheckOutDate");
+	Line 278: 	AddSemanticName("城市名称", "CityName");
+	
+	//过滤器
+	AddSemanticName("Star" 				,"Star"				);
+	AddSemanticName("Brand" 			,"Brand"			);
+	AddSemanticName("AreaRegion" 		,"AreaRegion"		);
+	AddSemanticName("CityRegion" 		,"CityRegion"		);
+	AddSemanticName("FeaturedAmenity" 	,"FeaturedAmenity"	);
+	AddSemanticName("PriceRange" 		,"PriceRange"		);	
+    酒店业务输出的语义标签 需要登记在此
+    */

@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="utf-8"?><chat><way><![CDATA[web]]></way><message_id><![CDATA[123]]></message_id><from_user><![CDATA[1]]></from_user><to_user><![CDATA[2]]></to_user><question><type><![CDATA[text]]></type><content><![CDATA[秦时明月]]></content></question><context><![CDATA[]]></context></chat>
