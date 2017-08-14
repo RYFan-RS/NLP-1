@@ -989,6 +989,7 @@ bool KnowledgeBase::searchByInvertIndex(const std::string& sIn, robosay::base::V
 
 	std::vector<std::string> vGetWord = m_Config.m_Parser.parseWithJiebaForShortWords(sIn).getWords();
 
+	//setMatched中包含的是处理标签，标题后满足条件的m_vQA，invertResult是正文部分满足的m_vQA
 	std::vector<std::pair<int,std::string> > invertResult = m_pKeyWordSearch->m_InvertIndex.match(vGetWord,setMatched,highWordMatchQA);
 
 	for(int i=0;i<invertResult.size()&& i<50;i++){
@@ -1295,6 +1296,7 @@ bool KnowledgeBase::chat(robosay::base::Input& input,robosay::base::VResult& vRe
 	std::map<int,std::string> highWordMatchQA;
 
 	searchByInvertIndex(input.m_sIn, vMidRslt, sWay,setMatched,highWordMatchQA);
+	//本次新增的是正文部分满足条件的文章
 	if(!vMidRslt.empty()){
 		vResult.moveFrom(vMidRslt);
 	}	

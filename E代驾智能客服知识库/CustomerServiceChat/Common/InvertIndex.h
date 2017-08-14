@@ -101,8 +101,9 @@ class InvertIndex
 						continue;
 
 					std::pair<std::string,float> keyValue(*itr,itWordId->second);
+					//wordsMap单词ID,pair是单词，IDF值，wordsMap对应的组合起来，就是用户输入的这些单词的信息
 					wordsMap[wordId]=keyValue;
-
+					//result文章编号,pair分别是:单词ID,在文章中出现的次数
 					merge(result,pMap,wordId);
 					
 				}
@@ -112,20 +113,23 @@ class InvertIndex
 			robosay::base::CSortManager<CONST_POINTER_INVERT_INDEX,float>  sortManager;
 
 			CONST_POINTER_INVERT_INDEX pInvertIndex = result.begin();
+			//每一篇文章
 			for(;pInvertIndex!=result.end();pInvertIndex++){
-
+				//setMatched对应的是m_vQA的编号,此处是处理已经匹配，找到答案的
 				if(setMatched.find(pInvertIndex->first)!=setMatched.end()){
 					std::string highLight;
 
 					std::map<int,float>::const_iterator it = pInvertIndex->second.begin();
 					for(;it!=pInvertIndex->second.end();it++){
+						//得到对应的单词
 						highLight+=wordsMap[it->first].first;
 						highLight+=";";
-					}					
+					}
+					//文章编号,在文章中出现的应该高亮的词汇
 					highWordMatchQA[pInvertIndex->first] = highLight;
 					continue;
 				}	
-				
+				//待处理没有找到答案的
 				float score = matchByTfidf(pInvertIndex, wordsMap);
 				if(score>0.01){
 					sortManager.Add(score,pInvertIndex);	
@@ -149,6 +153,7 @@ class InvertIndex
 					highLight+=wordsMap[it->first].first;
 					highLight+=";";
 				}
+				//itr1->first文章号,应该高亮的单词highLight
 				std::pair<int,std::string> scorePair(itr1->first,highLight);
 				finalResult.push_back(scorePair);
 			}
@@ -161,17 +166,19 @@ class InvertIndex
 			int sameWordNumber=0;
 			if(source->second.size()==0)
 				return fScore;
-
+			//source文章编号,pair分别是:单词ID,在文章中出现的次数
 			std::map<int,float>::const_iterator it = source->second.begin();
 			for(;it!=source->second.end();it++){
-				
+				//sentence单词ID,pair是单词，IDF值，wordsMap对应的组合起来，就是用户输入的这些单词的信息
+				//fScore是单词的IDF值累加,IDF值越大，说明这个单词对应的分类效果越好，那么他属于这篇文章的可能性越高
 				fScore+= sentence[it->first].second;
 				number++;
+				//sameWordNumber是所有单词在本文章中出现的次数
 				sameWordNumber+=it->second;
 				sameWordNumber-=1;
 				assert(sameWordNumber>=0);
 			}
-
+			//放大IDF值
 			fScore = fScore*number*10+sameWordNumber*distance;
 			return fScore;
 		}
@@ -190,6 +197,7 @@ class InvertIndex
 				if(itr==result.end()){
 					std::map<int,float> wordMap;
 					wordMap[wordId] = it->second;
+					//it->first是文章编号,wordMap分别是:单词ID,在文章中出现的次数
 					result[it->first] = wordMap;
 				}else{
 					itr->second[wordId] = it->second;
