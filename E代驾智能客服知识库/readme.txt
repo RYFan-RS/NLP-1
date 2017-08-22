@@ -27,3 +27,5 @@
                 number是本次输入的单词数量,sameWordNumber是所有单词在本文章中出现的次数,distance为0.000001。
             对正文部分满足条件的的加入最终结果vResult
         4.将结果存储为HTML给Java
+		
+4.效果截图:捕获1.PNG,效果2.PNG
