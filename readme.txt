@@ -12,7 +12,7 @@
 
 4.TextRank:文本摘要功能,可执行文件:TextRank/main
 
-5..百度LDA开源Femilia源码及详细注释
+5.百度LDA开源Femilia源码及详细注释
 	(1)LDA学习:
 	http://blog.csdn.net/a123456ei/article/details/22767429
 	(2)Femilia为源码，针对run_query_doc_sim_demo.sh短长文本进行匹配计算的功能进行了详细备注
