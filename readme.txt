@@ -12,9 +12,13 @@
 
 4.TextRank:文本摘要功能,可执行文件:TextRank/main
 
-5.百度开源Femilia
+5..百度LDA开源Femilia源码及详细注释
 	(1)LDA学习:
 	http://blog.csdn.net/a123456ei/article/details/22767429
 	(2)Femilia为源码，针对run_query_doc_sim_demo.sh短长文本进行匹配计算的功能进行了详细备注
+	
+6.E代驾智能客服知识库:为客服人员提供知识库搜索功能,按照"标签">"标题">"正文"的优先级进行排序
+
+7.为Jieba提供基于json-rpc 2.0的http服务
 
 
