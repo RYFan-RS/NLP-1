@@ -1,0 +1,7 @@
+2017-08-22 11:36:55.747 INFO src/epoll_socket.cpp(220): thread pool not set, we will build for core size:1
+2017-08-22 11:36:55.747 INFO src/epoll_socket.cpp(89): bind for ip:127.0.0.1 success
+2017-08-22 11:36:55.747 INFO src/epoll_socket.cpp(93): start Server Socket on port : 3456
+2017-08-22 13:29:18.150 INFO test/http_server_test.cpp(28): get client ip:127.0.0.1
+2017-08-22 13:29:18.150 INFO test/http_server_test.cpp(32): not thread data, tid:4243814144
+2017-08-22 13:29:18.150 INFO src/http_server.cpp(259): access_log GET /hello status_code:200 cost_time:97 us, body_size:18, client_ip:127.0.0.1
+2017-08-22 13:30:11.700 INFO src/http_server.cpp(259): access_log POST /login status_code:200 cost_time:56 us, body_size:34, client_ip:127.0.0.1
