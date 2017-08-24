@@ -1,4 +1,6 @@
-郁可唯的歌怎样的	提取规则结果:/music/music.txt:170	@singername的歌怎样	@singername的歌怎样	common:歌;的;	business:	variable:郁可唯;	label:singer;singername;
-郁可唯长的怎样呀	无法为它提取规则:@singer长的怎样呀				common:呀;的;	business:	variable:郁可唯;	label:singer;singername;	为您推荐的类似的规则:@singername的@songname;@singername的{歌}播放;@singer长的怎样;{唱}@singername的{歌};{播放}@singername的{歌};
-郁可唯的歌	无法为它提取规则:@singer的歌				common:歌;的;	business:	variable:郁可唯;	label:singer;singername;	为您推荐的类似的规则:@singername{唱的}{歌}{有哪些};@singername歌曲播放;@singer的歌呀;{帮我}{唱}{一个}@singername的{歌};{帮我}{唱}{一个}@songname{/吧};
-帮我看一下地铁五号线怎么走	无法为它提取规则:帮我看一下@PoiType怎么走				common:帮我;看一下;	business:看一下;	variable:地铁五号线;	label:PoiType;	为您推荐的类似的规则:@PoiType怎么走;{帮我}{查询}@PoiType;{帮我}{查询}{去}@Place;{帮我}{查询}{附近}的@PoiType;{帮我}{查询}最近的@Place;
+music	郁可唯的歌怎样的	提取规则结果:/music/music.txt:170	@singername的歌怎样	@singername的歌怎样	common:歌;的;	business:	variable:郁可唯;	label:singer;singername;
+music	郁可唯长的怎样呀	无法为它提取规则:@singer长的怎样呀				common:呀;的;	business:	variable:郁可唯;	label:singer;singername;	为您推荐的类似的规则:@singername的@songname;@singername的{歌}播放;@singer长的怎样;{唱}@singername的{歌};{播放}@singername的{歌};
+music	郁可唯的地平线	无法为它提取规则:@singer的				common:的;	business:	variable:郁可唯;	label:singer;singername;	为您推荐的类似的规则:@singername歌曲播放;@singername的{歌}播放;{帮我}{唱}{一个}@songname{/吧};{播放}@singername{唱的}{歌};{播放}@singername的{歌};
+navigation	帮我看一下地铁五号线怎么走	无法为它提取规则:帮我看一下@PoiType怎么走				common:帮我;看一下;	business:看一下;	variable:地铁五号线;	label:PoiType;	为您推荐的类似的规则:@PoiType怎么走;{帮我}{查询}@PoiType;{帮我}{查询}{去}@Place;{帮我}{查询}{附近}的@PoiType;{帮我}{查询}最近的@Place;
+navigation	花园蛋糕房地铁五号线怎么走	无法为它提取规则:@Place@PoiType怎么走				common:	business:	variable:花园蛋糕房;地铁五号线;	label:Place;PoiType;	为您推荐的类似的规则:@PoiType在什么地方;@PoiType怎么走;{/去}@Place怎么走;{帮我}{查询}@PoiType;{帮我}{查询}{去}@Place;
+navigation	卡吉村五号线怎么走	无法为它提取规则:@Place@PoiType怎么走				common:	business:	variable:卡吉村;五号线;	label:Place;PoiType;	为您推荐的类似的规则:@PoiType在什么地方;@PoiType怎么走;{/去}@Place怎么走;{帮我}{查询}@PoiType;{帮我}{查询}{去}@Place;

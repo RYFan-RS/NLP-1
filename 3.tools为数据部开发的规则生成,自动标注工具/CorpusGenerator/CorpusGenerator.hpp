@@ -202,27 +202,15 @@ public:
 		std::set<std::string> business;
 		std::set<std::string> common;	
 		std::set<std::string> label;
+		//variable需要保证显示的顺序,此处特殊处理
+		std::vector<std::string> label2;
+		std::vector<std::string> varaiable2;
+		
         std::set<std::string>::iterator setIter;
 		bool bRecommend = false;
 		bool bRepeat = false;
         //ofs<<"\n分词结果为:"<<acl::debug::toStr(vWord)<<std::endl;
         std::string sinput = input;
-        while(true==cmd.isSimpleSearchMode())
-            {
-                //提取label
-                std::string stemp = acl::Utility::extractAlphaNumberString(input);
-                if(!stemp.empty()){
-                        size_t pos = input.find('@');
-                        if(pos == std::string::npos) {
-                                break;
-                            }
-                        label.insert(stemp); 
-                        input = input.substr(pos+stemp.length()+1);
-                    }
-                else {
-                        break;
-                    }                    
-            }
        
 		for(size_t j =0;j<vWord.size();j++){
 
@@ -243,6 +231,14 @@ public:
                         //没有指定商业模式的时候，直接查找。指定商业模式的时候，只查找指定的商业模式
                         varaiable.insert(iter->first);
     					label.insert(iter->second.sVariableTag);
+						if(label2.end() == find(label2.begin(),label2.end(),iter->second.sVariableTag)){
+							//去重
+							label2.push_back(iter->second.sVariableTag);
+						}
+						if(varaiable2.end() == find(varaiable2.begin(),varaiable2.end(),iter->first)){
+							//去重
+							varaiable2.push_back(iter->first);
+						}						
     					vWord[j] = "@"+iter->second.sVariableTag;                    
     				}
                     else if(iter->second.nType == 2){
@@ -262,11 +258,7 @@ public:
                 }
 		}
 
-        if(true==cmd.isSimpleSearchMode()){
-                output = sinput;
-                output_nochange = sinput;
-            }
-		ofs<<output_nochange<<"\t";
+		ofs<<cmd.get_BusinessMode()<<"\t"<<output_nochange<<"\t";
 
 		//一个词的label可能存在多个	
 		acl::String temp2 = output;
@@ -303,14 +295,12 @@ public:
 				ofs<<*setIter<<";";				
 			}					
 		ofs<<"\tvariable:";
-        for(setIter = varaiable.begin();setIter != varaiable.end();setIter++)
-            {           
-                ofs<<*setIter<<";";                
+		for(size_t j =0;j<varaiable2.size();j++){		          
+                ofs<<varaiable2[j]<<";";                
             }					
 		ofs<<"\tlabel:";
-        for(setIter = label.begin();setIter != label.end();setIter++)
-            {           
-                ofs<<*setIter<<";";                
+		for(size_t j =0;j<label2.size();j++){           
+                ofs<<label2[j]<<";";                
             }
 		if(bRecommend == true){
 			ofs<<"\t为您推荐的类似的规则:"; 
@@ -360,11 +350,11 @@ public:
 		std::vector<std::string> words;
 		std::multimap<std::string,DictType> mdata;			
 		
-		file.setCommentMarks("#");
-		if(false == file.read(cmd.get_InFile())){
-				std::cout<<"无法打开输入文件，请输入正确的文件名"<<std::endl;
-				return false;
-			}
+ 		file.setCommentMarks("#");
+ 		if(false == file.read(cmd.get_InFile())){
+ 				std::cout<<"无法打开输入文件，请输入正确的文件名"<<std::endl;
+ 				return false;
+ 			}
 
 		acl::Time timer;
 		timer.start("Init");
