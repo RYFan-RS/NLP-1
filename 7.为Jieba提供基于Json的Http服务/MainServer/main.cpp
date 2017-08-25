@@ -30,76 +30,188 @@ void a_test_fn() {
 
     pthread_setspecific(g_tp_key, a);
 }
-bool Get_Basic(Request &request, Json::Value &root){
-	std::string sTemp;
-	bool bRight = true;;
-	sTemp = request.get_param("jsonrpc");
-	if(sTemp != "2.0"){
-		Json::Value jErrorObj;		
-		jErrorObj["code"] = -32603;
-		jErrorObj["message"] = "jsonrpc版本错误,只支持2.0";
-		root["error"] = jErrorObj;
-		root["jsonrpc"] = "2.0";
-		bRight = false;
-	}else {
-		root["jsonrpc"] = sTemp; 
-	}
-	sTemp = request.get_param("id");
-	if(sTemp == "null"){
-		Json::Value jErrorObj;		
-		jErrorObj["code"] = -32603;
-		jErrorObj["message"] = "id值错误";		
-		root["error"] = jErrorObj;
-		bRight = false;	
-	}else{
-		root["id"] = sTemp;
-	}
-
-	return bRight;
-}
-
-bool Use_Jieba(Request &request, Json::Value &root){
+std::string Use_Jieba(std::string &sIn){
     std::vector<std::string> vRet;
     std::string sRet;
 	std::map<std::string,std::vector<std::string> > subSentence;
 
-	std::string sIn=request.get_param("data");
 	if(cppjiebaParser!=NULL){
 		(reinterpret_cast<cppjieba::Jieba const*>(cppjiebaParser))->CutForSearchEx(sIn,vRet,subSentence,true);
 		for(size_t i = 0;i<vRet.size();i++){
 			sRet += "/"+vRet[i];
 		}
-		root["result"] = sRet;
 	}
-	else {
-		Json::Value jErrorObj;		
-		jErrorObj["code"] = -32603;
-		jErrorObj["message"] = "jieba分词错误";		
-		root["error"] = jErrorObj;
-		root["jsonrpc"] = "2.0";
-
-		return false;
-	}
-	
-	return true;
+	return sRet;
 }
+
+void Set_Error(std::string message,Request &request, Json::Value &root){
+	Json::Value jErrorObj;	
+	Json::Value jDataObj;	
+	root["id"] = request.get_param("id");
+	root["jsonrpc"] = "2.0";
+	jErrorObj["success"] = false;
+	jErrorObj["message"] = message;
+	jErrorObj["data"] = jDataObj;
+	root["result"]=jErrorObj;
+}
+bool Check_Basic(Request &request, Json::Value &root){
+	std::string sTemp;
+	bool bRight = true;;
+	sTemp = request.get_param("jsonrpc");
+	if(sTemp != "2.0"){
+		Set_Error("jsonrpc版本错误,只支持2.0："+sTemp,request,root);
+		bRight = false;
+	}
+	sTemp = request.get_param("id");
+	if(sTemp == "null"){
+		Set_Error("id值错误",request,root);	
+		bRight = false;	
+	}
+
+	return bRight;
+}
+void Process_Live(Request &request, Json::Value &root){
+	Json::Value jResultObj;	
+	Json::Value jDataObj;
+	
+	root["id"] = request.get_param("id");
+	root["jsonrpc"] = "2.0";
+	jResultObj["success"] = true;
+	jResultObj["message"] = "Jieba分词功能正常";
+	jDataObj["name"] = "null";
+	jDataObj["version"] = "null";
+	jDataObj["md5"] = "null";	
+	jResultObj["data"] = jDataObj;
+	root["result"]=jResultObj;
+	return;
+}
+void Process_List(Request &request, Json::Value &root){
+	Json::Value jResultObj;	
+	Json::Value jDataObj;
+	Json::Value jManageObj;
+	
+	root["id"] = request.get_param("id");
+	root["jsonrpc"] = "2.0";
+	jResultObj["success"] = true;
+	jResultObj["message"] = "返回接口列表";
+
+	//介绍live接口
+	jManageObj["method1"] = "live";
+	jManageObj["params1"] = "{jsonrpc=2.0,method=live,params=[],id=1}";
+	//介绍List接口
+	jManageObj["method2"] = "list";
+	jManageObj["params2"] = "{jsonrpc=2.0,method=list,params=[],id=1}";
+	//介绍debug接口
+	jManageObj["method3"] = "debug";
+	jManageObj["params3"] = "{jsonrpc=2.0,method=debug,params=[],id=1}";
+	//介绍config接口
+	jManageObj["method4"] = "config";
+	jManageObj["params4"] = "{jsonrpc=2.0,method=config,params=[],id=1}";
+	//介绍process接口
+	jManageObj["method5"] = "process";
+	jManageObj["params5"] = "{jsonrpc=2.0,method=process,params=[待分词内容],id=1}";
+	//介绍test接口
+	jManageObj["method6"] = "test";
+	jManageObj["params6"] = "{jsonrpc=2.0,method=test,params=[],id=1}";
+	
+	jDataObj["manage"] = jManageObj;	
+	jResultObj["data"] = jDataObj;
+	root["result"]=jResultObj;
+}
+void Process_Debug(Request &request, Json::Value &root){
+	Json::Value jResultObj;	
+	Json::Value jDataObj;
+
+	root["id"] = request.get_param("id");
+	root["jsonrpc"] = "2.0";
+	jResultObj["success"] = true;
+	jResultObj["message"] = "Jieba分词没有debug开关";	
+	jResultObj["data"] = jDataObj;
+	root["result"]=jResultObj;	
+}
+void Process_Config(Request &request, Json::Value &root){
+	Json::Value jResultObj;	
+	Json::Value jDataObj;
+
+	root["id"] = request.get_param("id");
+	root["jsonrpc"] = "2.0";
+	jResultObj["success"] = true;
+	jResultObj["message"] = "Jieba分词暂时没有config功能";	
+	jResultObj["data"] = jDataObj;
+	root["result"]=jResultObj;	
+}
+void Process_Process(Request &request, Json::Value &root){
+	Json::Value jResultObj;	
+	Json::Value jDataObj;
+	std::string sTemp;
+	sTemp = request.get_param("params");
+	root["id"] = request.get_param("id");
+	root["jsonrpc"] = "2.0";
+	jDataObj["result"] = Use_Jieba(sTemp);
+	jResultObj["success"] = true;
+	jResultObj["message"] = "使用Jieba分词";	
+	jResultObj["data"] = jDataObj;
+	root["result"]=jResultObj;	
+}
+void Process_Test(Request &request, Json::Value &root){
+	Json::Value jResultObj;	
+	Json::Value jDataObj;
+	std::string sTemp = "你好,很高兴认识你";
+	root["id"] = request.get_param("id");
+	root["jsonrpc"] = "2.0";
+	jDataObj["result"] = Use_Jieba(sTemp);
+	jResultObj["success"] = true;
+	jResultObj["message"] = sTemp;	
+	jResultObj["data"] = jDataObj;
+	root["result"]=jResultObj;	
+}
+
+bool Get_Run_Method(Request &request, Json::Value &root){
+	std::string sTemp;
+	sTemp = request.get_param("method");
+	if(sTemp=="config"){
+		Process_Config(request,root);
+	}else if(sTemp=="process"){
+		Process_Process(request,root);	
+	}else if(sTemp=="test"){
+		Process_Test(request,root);
+	}else{
+		Set_Error("URL错误",request,root);
+	}
+}
+bool Get_Manage_Method(Request &request, Json::Value &root){
+	std::string sTemp;
+	sTemp = request.get_param("method");
+	if(sTemp=="live"){
+		Process_Live(request,root);
+	}else if(sTemp=="list"){
+		Process_List(request,root);	
+	}else if(sTemp=="debug"){
+		Process_Debug(request,root);
+	}else{
+		Set_Error("URL错误",request,root);
+	}
+}
+
 void run(Request &request, Json::Value &root){
 
-	if(false == Get_Basic(request,root)){
+	if(false == Check_Basic(request,root)){
 		return;
 	}
 
-	if(false == Use_Jieba(request,root)){
+	if(false == Get_Run_Method(request,root)){
 		return;
 	}
-
+	
 }
 void manage(Request &request, Json::Value &root){
-	if(false == Get_Basic(request,root)){
+	if(false == Check_Basic(request,root)){
 		return;
 	}
 
-	root["result"] = "manager_test";
+	if(false == Get_Manage_Method(request,root)){
+		return;
+	}
 }
 void InitCppjieba()
 {

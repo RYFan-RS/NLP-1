@@ -20,7 +20,7 @@ OBJECTS = $(SOURCES:.cpp=.o)
 
 INCLUDE = -I$(ROOT_DIR)/include/Common -Iinclude
 
-RObOSAY_LIBS = $(ROOT_DIR)/bin/libDynamicParser.a $(ROOT_DIR)/bin/libSemanticEngine.a
+RObOSAY_LIBS = $(ROOT_DIR)/bin/libDynamicParser.a 
 HTTP_LIBS = $(ROOT_DIR)/bin/libsimpleserver.a $(ROOT_DIR)/bin/libhttp_parser.a $(ROOT_DIR)/bin/libjson_libmt.a
 LIBS = $(RObOSAY_LIBS) $(HTTP_LIBS)
 HTTP_MODULE = ehttp
