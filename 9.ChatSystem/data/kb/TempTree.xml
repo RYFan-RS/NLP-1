@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node>
+	<conf>
+		<name>TempTree</name>
+		<semantic>true</semantic>
+		<type>TREE</type>
+	</conf>
+	<Tree name='邱佳豪的个人情况'>
+		<quest>你能介绍一下自己吗</quest>
+		<answer>请问你想知道的个人情况还是职业技能<answer>
+		<Tree name='职业技能'>
+			<quest>询问邱佳豪的职业技能</quest>
+			<answer>Python，C++，深度学习，人机交互<answer>
+		<Tree>
+		<Tree name='个人情况'>
+			<quest>询问邱佳豪的职业技能</quest>
+			<answer>今年25岁，男，未婚，身高175，体重70kg<answer>
+		<Tree>	
+	</Tree>	
+</node>

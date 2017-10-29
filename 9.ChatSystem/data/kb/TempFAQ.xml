@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<node>
+	<conf>
+		<name>TempFAQ</name>
+		<semantic>true</semantic>
+		<type>FAQ</type>
+	</conf>
+	<FAQ>
+		<quest>银联二维码怎么使用？</quest>
+		<answer>打开银联钱包，将右上方二维码给对方扫一扫即可</answer>
+	</FAQ>
+	<FAQ>
+		<quest>银联红包怎么使用？</quest>
+		<answer>打开银联钱包，将右上方二维码给对方扫一扫即可</answer>
+	</FAQ>		
+</node>

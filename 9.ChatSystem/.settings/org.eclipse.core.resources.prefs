@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+encoding//chat/chat.py=utf-8
+encoding//data_help/helper.py=utf-8
+encoding//httpServer/http_server.py=utf-8
+encoding//mysql/mysql_lib.py=utf-8
+encoding//semantic/semantic.py=utf-8
